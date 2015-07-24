@@ -7,7 +7,8 @@ import java.util.Set;
 import org.apache.solr.common.util.NamedList;
 
 /**
- * Utility class for working with {@link NamedList}.
+ * Utility class for working with {@link NamedList}. All methods of this class are null-safe: if the named list is
+ * {@code null}, the methods will simply return {@code null}.
  * <p>
  * The convenience methods that take a number of path elements as an argument all work by first navigating to the given
  * nested {@code NamedList} and then returning the requested element of that list. Note that if any of the lists in the
@@ -168,7 +169,7 @@ public final class NamedLists {
     *            if the value stored in the list is not an instance of class {@code elementClass}.
     */
    public static <T> T get(NamedList<?> namedList, Class<T> elementClass, String name) {
-      Object value = namedList.get(name);
+      Object value = namedList != null ? namedList.get(name) : null;
       try {
          return elementClass.cast(value);
       } catch (ClassCastException e) {
@@ -183,11 +184,34 @@ public final class NamedLists {
     * @see #get(NamedList, Class, String)
     */
    public static <T> T get(NamedList<?> namedList, Class<T> elementClass, String... names) {
-      Object value = namedList.findRecursive(names);
+      Object value = namedList != null ? namedList.findRecursive(names) : null;
       try {
          return elementClass.cast(value);
       } catch (ClassCastException e) {
          throw new NamedListEntryClassCastException(names, value.getClass(), elementClass);
+      }
+   }
+
+   /**
+    * Gets the element at the specified index from the given list.
+    * 
+    * @param namedList
+    *           the list.
+    * @param elementClass
+    *           the class of the element expected in the list at the specified index.
+    * @index the index of the element.
+    * @return the element at the specified index.
+    * @throws NamedListEntryClassCastException
+    *            if the value stored in the list is not an instance of {@code elementClass}.
+    * @throws IndexOutOfBoundsException
+    *            if the given index is not a valid index into the given list.
+    */
+   public static <T> T get(NamedList<?> namedList, Class<T> elementClass, int index) {
+      Object value = namedList != null ? namedList.getVal(index) : null;
+      try {
+         return elementClass.cast(value);
+      } catch (ClassCastException e) {
+         throw new NamedListEntryClassCastException(index, value.getClass(), elementClass);
       }
    }
 }

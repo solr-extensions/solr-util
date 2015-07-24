@@ -8,10 +8,14 @@ import java.util.Arrays;
 public class NamedListEntryClassCastException extends ClassCastException {
 
    NamedListEntryClassCastException(String name, Class<?> actual, Class<?> expected) {
-      super(String.format("Entry \"%s\" is an instance of %s and cannot be cast to %s", name, actual, expected));
+      super(String.format("Entry %s is an instance of %s and cannot be cast to %s", name, actual, expected));
    }
 
    NamedListEntryClassCastException(String[] names, Class<?> actual, Class<?> expected) {
       this(String.join(".", names), actual, expected);
+   }
+
+   NamedListEntryClassCastException(int index, Class<?> actual, Class<?> expected) {
+      this("[" + index + "]", actual, expected);
    }
 }

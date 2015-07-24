@@ -13,6 +13,7 @@ import static org.junit.Assert.assertSame;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.solr.common.util.NamedList;
@@ -53,7 +54,7 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testNavigate_null() throws Exception {
+   public void testNavigate_nullValueOrNoElement() throws Exception {
       assertNull(navigate(nested, "none"));
       assertNull(navigate(nested, "does-not-exist"));
 
@@ -63,6 +64,12 @@ public class NamedListsTest {
       // Should return null if any of the path elements is null or does not exist
       assertNull(navigate(list, "none", "whatever"));
       assertNull(navigate(list, "does-not-exist", "whatever"));
+   }
+
+   @Test
+   public void testNavigate_nullList() throws Exception {
+      assertNull(navigate(null, "whatever"));
+      assertNull(navigate(null, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -82,11 +89,17 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testGetSet_null() throws Exception {
+   public void testGetSet_nullValueOrNoElement() throws Exception {
       assertNull(getSet(list, "does-not-exist"));
       assertNull(getSet(list, "none"));
       assertNull(getSet(list, "nested", "none"));
       assertNull(getSet(list, "nested", "does-not-exist"));
+   }
+
+   @Test
+   public void testGetSet_nullList() throws Exception {
+      assertNull(getSet(null, "whatever"));
+      assertNull(getSet(null, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -106,11 +119,17 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testGetList_null() throws Exception {
+   public void testGetList_nullValueOrNoElement() throws Exception {
       assertNull(getList(list, "does-not-exist"));
       assertNull(getList(list, "none"));
       assertNull(getList(list, "nested", "none"));
       assertNull(getList(list, "nested", "does-not-exist"));
+   }
+
+   @Test
+   public void testGetList_nullList() throws Exception {
+      assertNull(getList(null, "whatever"));
+      assertNull(getList(null, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -133,11 +152,17 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testGetCollection_null() throws Exception {
+   public void testGetCollection_nullValueOrNoElement() throws Exception {
       assertNull(getCollection(list, "does-not-exist"));
       assertNull(getCollection(list, "none"));
       assertNull(getCollection(list, "nested", "none"));
       assertNull(getCollection(list, "nested", "does-not-exist"));
+   }
+
+   @Test
+   public void testGetCollection_nullList() throws Exception {
+      assertNull(getCollection(null, "whatever"));
+      assertNull(getCollection(null, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -157,11 +182,17 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testGetString_null() throws Exception {
+   public void testGetString_nullValueOrNoElement() throws Exception {
       assertNull(getString(list, "does-not-exist"));
       assertNull(getString(list, "none"));
       assertNull(getString(list, "nested", "none"));
       assertNull(getString(list, "nested", "does-not-exist"));
+   }
+
+   @Test
+   public void testGetString_nullList() throws Exception {
+      assertNull(getString(null, "whatever"));
+      assertNull(getString(null, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -181,12 +212,18 @@ public class NamedListsTest {
    }
 
    @Test
-   public void testGet_null() throws Exception {
+   public void testGet_nullValueOrNoElement() throws Exception {
       // When returning null, the expected class should be irrelevant
       assertNull(get(list, Void.class, "does-not-exist"));
       assertNull(get(list, Void.class, "none"));
       assertNull(get(list, Void.class, "nested", "none"));
       assertNull(get(list, Void.class, "nested", "does-not-exist"));
+   }
+
+   @Test
+   public void testGet_nullList() throws Exception {
+      assertNull(get(null, Void.class, "whatever"));
+      assertNull(get(null, Void.class, "some", "path"));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
@@ -197,5 +234,26 @@ public class NamedListsTest {
    @Test(expected = NamedListEntryClassCastException.class)
    public void testGet_elementOfUnexpectedClass_nested() throws Exception {
       get(list, Void.class, "nested", "str");
+   }
+
+   @Test
+   public void testGetIndex() throws Exception {
+      assertEquals(deeplyNested, get(nested, NamedList.class, 0));
+      assertEquals("foo", get(nested, String.class, 2));
+   }
+
+   @Test
+   public void testGetIndex_nullList() throws Exception {
+       assertNull(get(null, Void.class, 0));
+   }
+
+   @Test(expected = NamedListEntryClassCastException.class)
+   public void testGetIndex_elementOfUnexpectedClass() throws Exception {
+       get(list, Void.class, 0);
+   }
+
+   @Test(expected = IndexOutOfBoundsException.class)
+   public void testgetIndex_invalidIndex() throws Exception {
+       get(list, String.class, 42);
    }
 }
