@@ -23,10 +23,12 @@ import java.util.Set;
 import org.apache.solr.common.util.NamedList;
 
 /**
- * Provides more convenient read-only access to the elements of a {@link NamedList}. All methods of this class return
- * {@code null} if the underlying named list does not contain a value for a given name, or if the value for the given
- * name is {@code null}. The underlying named list may itself be {@code null}, in this case, the methods will also
- * return {@code null}.
+ * Provides more convenient read-only access to the elements of a {@link NamedList}. The {@code getNested} methods of
+ * this class return a nested named list, wrapped in another instance of this class. If the nested list does not exist
+ * or the element at the given name or index is {@code null}, the returned {@code ConvenientNamedList} is empty. All
+ * other getter methods return {@code null} if the underlying named list does not contain a value for a given name, or
+ * if the value for the given name is {@code null}. The underlying named list may itself be {@code null}, in this case,
+ * the methods will also return {@code null}.
  */
 public class ConvenientNamedList {
 
