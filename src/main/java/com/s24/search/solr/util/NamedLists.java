@@ -47,6 +47,26 @@ public final class NamedLists {
    }
 
    /**
+    * Gets the nested {@code NamedList} stored at the given index. Note that unlike {@link NamedList#getVal(int)}, this
+    * method will return {@code null} if the given index is invalid instead of throwing an
+    * {@code IndexOutOfBoundsException}.
+    * 
+    * @param namedList
+    *           the list.
+    * @param index
+    *           the index of the element.
+    * @return the nested {@code NamedList}, or {@code null} if the element at the given index is {@code null} or if the
+    *         given index is not a valid index.
+    */
+   public static NamedList<?> navigate(NamedList<?> namedList, int index) {
+      try {
+         return get(namedList, NamedList.class, index);
+      } catch (IndexOutOfBoundsException e) {
+         return null;
+      }
+   }
+
+   /**
     * Gets the {@code Set} of the specified name from the given list.
     * 
     * @param namedList

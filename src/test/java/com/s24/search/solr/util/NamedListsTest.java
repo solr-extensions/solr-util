@@ -13,7 +13,6 @@ import static org.junit.Assert.assertSame;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.solr.common.util.NamedList;
@@ -80,6 +79,26 @@ public class NamedListsTest {
    @Test(expected = NamedListEntryClassCastException.class)
    public void testNavigate_elementIsString_nested() throws Exception {
       navigate(list, "nested", "deeplyNested", "greeting");
+   }
+
+   @Test
+   public void testNavigateByIndex() throws Exception {
+      assertSame(nested, navigate(list, 0));
+   }
+
+   @Test
+   public void testNavigateByIndex_nullValue() throws Exception {
+      assertNull(navigate(list, 1));
+   }
+
+   @Test
+   public void testNavigateByIndex_nullList() throws Exception {
+      assertNull(navigate(null, 0));
+   }
+
+   @Test
+   public void testNavigateByIndex_invalidIndex() throws Exception {
+      assertNull(navigate(list, 42));
    }
 
    @Test
@@ -244,16 +263,16 @@ public class NamedListsTest {
 
    @Test
    public void testGetIndex_nullList() throws Exception {
-       assertNull(get(null, Void.class, 0));
+      assertNull(get(null, Void.class, 0));
    }
 
    @Test(expected = NamedListEntryClassCastException.class)
    public void testGetIndex_elementOfUnexpectedClass() throws Exception {
-       get(list, Void.class, 0);
+      get(list, Void.class, 0);
    }
 
    @Test(expected = IndexOutOfBoundsException.class)
    public void testgetIndex_invalidIndex() throws Exception {
-       get(list, String.class, 42);
+      get(list, String.class, 42);
    }
 }
