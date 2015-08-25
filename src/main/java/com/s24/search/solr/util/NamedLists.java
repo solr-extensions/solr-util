@@ -17,7 +17,9 @@
 package com.s24.search.solr.util;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.solr.common.util.NamedList;
@@ -80,6 +82,28 @@ public final class NamedLists {
       } catch (IndexOutOfBoundsException e) {
          return null;
       }
+   }
+
+   /**
+    * Returns the set of keys in the given named list.
+    * 
+    * @param namedList
+    *           the list.
+    *
+    * @return The set of keys, or {@code null} if {@code namedList} was {@code null}.
+    *
+    * @since 1.1
+    */
+   public static Set<String> keys(NamedList<?> namedList) {
+      if (namedList == null) {
+         return null;
+      }
+
+      Set<String> result = new HashSet<>();
+      for (Map.Entry<String, ?> entry : namedList) {
+         result.add(entry.getKey());
+      }
+      return result;
    }
 
    /**

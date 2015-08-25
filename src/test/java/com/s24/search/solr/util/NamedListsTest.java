@@ -21,6 +21,7 @@ import static com.s24.search.solr.util.NamedLists.getCollection;
 import static com.s24.search.solr.util.NamedLists.getList;
 import static com.s24.search.solr.util.NamedLists.getSet;
 import static com.s24.search.solr.util.NamedLists.getString;
+import static com.s24.search.solr.util.NamedLists.keys;
 import static com.s24.search.solr.util.NamedLists.navigate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -115,6 +116,19 @@ public class NamedListsTest {
    @Test
    public void testNavigateByIndex_invalidIndex() throws Exception {
       assertNull(navigate(list, 42));
+   }
+
+   @Test
+   public void testKeys_null() throws Exception {
+      assertNull(keys(null));
+   }
+
+   @Test
+   public void testKeys() throws Exception {
+      Set<String> expected = new HashSet<>();
+      expected.add("nested");
+      expected.add("none");
+      assertEquals(expected, keys(list));
    }
 
    @Test
