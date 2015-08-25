@@ -10,7 +10,7 @@ Compile with Maven and install the artifact in your local repository, then add t
     <dependency>
         <groupId>com.s24.search.solr</groupId>
         <artifactId>solr-util</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
     </dependency>
 
 The artifact is not yet available via Maven Central.
