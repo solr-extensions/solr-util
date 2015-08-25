@@ -5,15 +5,13 @@ instances of `NamedList`.
 
 ## Usage
 
-Compile with Maven and install the artifact in your local repository, then add the following dependency to your code:
+The library is published via Maven Central. If you're using Maven, simply add the following dependency to your project:
 
     <dependency>
         <groupId>com.s24.search.solr</groupId>
         <artifactId>solr-util</artifactId>
         <version>1.1</version>
     </dependency>
-
-The artifact is not yet available via Maven Central.
 
 ## License
 
