@@ -3,6 +3,8 @@
 Utility classes for working with Apache Solr. Currently contains only some convenience methods for working with
 instances of `NamedList`.
 
+For more information, read the [JavaDoc](https://www.javadoc.io/doc/com.s24.search.solr/solr-util).
+
 ## Usage
 
 The library is published via Maven Central. If you're using Maven, simply add the following dependency to your project:
