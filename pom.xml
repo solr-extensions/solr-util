@@ -6,7 +6,7 @@
 
    <groupId>com.s24.search.solr</groupId>
    <artifactId>solr-util</artifactId>
-   <version>1.2</version>
+   <version>1.3-SNAPSHOT</version>
    <name>Utility classes for Apache Solr</name>
    <description>Utility classes for Apache Solr</description>
    <url>https://github.com/shopping24/solr-util</url>
