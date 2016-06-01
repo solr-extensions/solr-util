@@ -12,7 +12,7 @@ The library is published via Maven Central. If you're using Maven, simply add th
     <dependency>
         <groupId>com.s24.search.solr</groupId>
         <artifactId>solr-util</artifactId>
-        <version>1.1</version>
+        <version>1.2</version>
     </dependency>
 
 ## License
