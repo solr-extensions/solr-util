@@ -73,9 +73,8 @@ public class Analyzers {
      * Runs an input string through the given analyzer and returns most available
      * attributes extracted.
      */
-    public static List<Token> analyzeTokens(Analyzer analyzer, String fieldName, String input) throws IOException {
+    public static List<Token> analyzeTokens(Analyzer analyzer, String input) throws IOException {
         checkNotNull(analyzer);
-        checkNotNull(fieldName);
         checkNotNull(input);
 
         List<Token> result = Lists.newArrayList();
