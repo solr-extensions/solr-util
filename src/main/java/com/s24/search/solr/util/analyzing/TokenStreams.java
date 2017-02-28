@@ -8,11 +8,14 @@ import java.io.IOException;
 
 /**
  * This class is superseeded by the open source version in solr-analyzers.
- *
- * @author Shopping24 GmbH, Torsten Bøgh Köster (@tboeghk)
  */
 public class TokenStreams {
 
+    /**
+     * End streams quietly. Without throwing any {@link IOException}.
+     *
+     * @param tokenStream {@link TokenStream} to be closed.
+     */
     public static void endQuietly(TokenStream tokenStream) {
         if (tokenStream != null) {
             try {

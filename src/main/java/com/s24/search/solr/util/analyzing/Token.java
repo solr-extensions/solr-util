@@ -1,15 +1,34 @@
 package com.s24.search.solr.util.analyzing;
 
 import com.google.common.base.Objects;
+import org.apache.lucene.util.Attribute;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Representation of a token in the analyzing phase with additional information.
+ */
 public class Token {
     public static final String MULTIWORD_TOKEN = "multiword";
 
+    /**
+     * Name of the token.
+     */
     private final String name;
+
+    /**
+     * Type of the token (e.g. {@link Attribute}).
+     */
     private final String type;
+
+    /**
+     * Position in the input.
+     */
     private final Position position;
+
+    /**
+     * Of how many token does this token exists.
+     */
     private final Integer tokenCount;
 
     public Token(String name, Position positionInOriginal, Integer tokenCount) {

@@ -7,6 +7,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * E.g. where the position of a entity is in the original query.
  */
 public class Position {
+
     private final Integer start;
     private final Integer end;
     private final Integer wordPosition;

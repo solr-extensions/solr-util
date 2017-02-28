@@ -16,7 +16,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Analyzer utilities. This class is superseeded by the open source version in solr-analyzers.
  *
- * @author Shopping24 GmbH, Torsten Bøgh Köster (@tboeghk)
  * @see TokenStream
  */
 public class Analyzers {
@@ -26,6 +25,10 @@ public class Analyzers {
 
     /**
      * Runs an input string through the given analyzer.
+     *
+     * @param analyzer  Analyzer to be used.
+     * @param input     Input to analyze.
+     * @param separator Split the input by this separator.
      */
     public static String analyze(Analyzer analyzer, String input, String separator) throws IOException {
         checkNotNull(separator);
@@ -35,6 +38,10 @@ public class Analyzers {
 
     /**
      * Runs an input string through the given analyzer.
+     *
+     * @param analyzer Analyzer to be used.
+     * @param input    Input to analyze.
+     * @return A list of strings
      */
     public static List<String> analyze(Analyzer analyzer, String input) throws IOException {
         checkNotNull(analyzer);
@@ -72,6 +79,10 @@ public class Analyzers {
     /**
      * Runs an input string through the given analyzer and returns most available
      * attributes extracted.
+     *
+     * @param analyzer Analyzer to be used.
+     * @param input    Input to analyze.
+     * @return A list of {@link Token}
      */
     public static List<Token> analyzeTokens(Analyzer analyzer, String input) throws IOException {
         checkNotNull(analyzer);
