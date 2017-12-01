@@ -156,9 +156,7 @@ public class SolrLocalResponseBuilder implements Closeable {
         // add fqs
         if (original.getParams(CommonParams.FQ) != null) {
             for (String fq : original.getParams(CommonParams.FQ)) {
-                if (!fq.startsWith("{!collapse ")) {
-                    params.add(CommonParams.FQ, fq);
-                }
+                params.add(CommonParams.FQ, fq);
             }
         }
 
@@ -192,15 +190,6 @@ public class SolrLocalResponseBuilder implements Closeable {
         params.remove("boost");
         params.remove("rq");
         params.remove("rrq");
-
-        // fix collapsing in fqs
-        if (params.getParams(CommonParams.FQ) != null) {
-            for (String fq : params.getParams(CommonParams.FQ)) {
-                if (fq.startsWith("{!collapse ")) {
-                    params.remove(CommonParams.FQ, fq);
-                }
-            }
-        }
 
         // remove phrase boosting
         params.remove(DisMaxParams.PF);
