@@ -4,14 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
 
-   <groupId>com.s24.search.solr</groupId>
+   <groupId>cool.solr</groupId>
    <artifactId>solr-util</artifactId>
-   <version>1.4.3-SNAPSHOT</version>
+   <version>1.5.0</version>
    <name>Utility classes for Apache Solr</name>
    <description>Utility classes for Apache Solr</description>
-   <url>https://github.com/shopping24/solr-util</url>
+   <url>https://github.com/solr-cool/solr-util</url>
 
    <developers>
+      <developer>
+         <id>tboeghk</id>
+         <name>Torsten Bøgh Köster</name>
+         <email>tbk@thiswayup.de</email>
+         <roles>
+               <role>owner</role>
+               <role>developer</role>
+         </roles>
+         <timezone>+1</timezone>
+      </developer>
       <developer>
          <name>Jörg Rathlev</name>
          <email>joerg.rathlev@s24.com</email>
@@ -26,10 +36,14 @@
    </licenses>
 
    <scm>
-      <connection>scm:git:git@github.com:shopping24/solr-util.git</connection>
-      <developerConnection>scm:git:git@github.com:shopping24/solr-util.git</developerConnection>
-      <url>git@github.com:shopping24/solr-util.git</url>
+      <connection>scm:git:git@github.com:solr-cool/solr-util.git</connection>
+      <developerConnection>scm:git:git@github.com:solr-cool/solr-util.git</developerConnection>
+      <url>git@github.com:solr-cool/solr-util.git</url>
    </scm>
+
+   <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
    <dependencies>
       <dependency>
@@ -72,70 +86,100 @@
    </distributionManagement>
 
    <profiles>
-      <profile>
-         <id>release</id>
-         <build>
-            <defaultGoal>clean deploy</defaultGoal>
-            <plugins>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-source-plugin</artifactId>
-                  <version>2.4</version>
-                  <executions>
-                     <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                           <goal>jar-no-fork</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-javadoc-plugin</artifactId>
-                  <version>2.10.3</version>
-                  <executions>
-                     <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                           <goal>jar</goal>
-                        </goals>
-                     </execution>
-                  </executions>
-                  <configuration>
-                     <additionalparam>-Xdoclint:none</additionalparam>
-                  </configuration>
-               </plugin>
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-gpg-plugin</artifactId>
-                  <version>1.6</version>
-                  <executions>
-                     <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                           <goal>sign</goal>
-                        </goals>
+        <profile>
+            <id>release</id>
+            <build>
+                <defaultGoal>
+			      clean deploy
+			   </defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>de.jutzig</groupId>
+                        <artifactId>github-release-plugin</artifactId>
+                        <version>1.1.1</version>
+                        <executions>
+                            <execution>
+                                <id>upload-artifacts-2-github</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>release</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                           <executable>gpg</executable>
+                            <description>Release version ${project.version}</description>
+                            <releaseName>${project.version}</releaseName>
+                            <tag>${project.version}</tag>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>${project.artifactId}*.jar</include>
+                                        <include>${project.artifactId}*.jar.asc</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
                         </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-               <plugin>
-                  <groupId>org.sonatype.plugins</groupId>
-                  <artifactId>nexus-staging-maven-plugin</artifactId>
-                  <version>1.6.5</version>
-                  <extensions>true</extensions>
-                  <configuration>
-                     <serverId>ossrh</serverId>
-                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                  </configuration>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
-   </profiles>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

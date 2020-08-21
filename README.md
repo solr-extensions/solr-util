@@ -10,10 +10,34 @@ For more information, read the [JavaDoc](https://www.javadoc.io/doc/com.s24.sear
 The library is published via Maven Central. If you're using Maven, simply add the following dependency to your project:
 
     <dependency>
-        <groupId>com.s24.search.solr</groupId>
+        <groupId>cool.solr</groupId>
         <artifactId>solr-util</artifactId>
-        <version>1.4.1</version>
+        <version>1.5.0</version>
     </dependency>
+
+### Releasing the project to maven central
+    
+Define new versions
+    
+    $ export NEXT_VERSION=<version>
+    $ export NEXT_DEVELOPMENT_VERSION=<version>-SNAPSHOT
+
+Then execute the release chain
+
+    $ mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DgenerateBackupPoms=false -DnewVersion=$NEXT_VERSION
+    $ git commit -a -m "pushes to release version $NEXT_VERSION"
+    $ git tag -a v$NEXT_VERSION -m "`curl -s http://whatthecommit.com/index.txt`"
+    $ mvn -P release
+    
+Then, increment to next development version:
+    
+    $ mvn org.codehaus.mojo:versions-maven-plugin:2.0:set -DgenerateBackupPoms=false -DnewVersion=$NEXT_DEVELOPMENT_VERSION
+    $ git commit -a -m "pushes to development version $NEXT_DEVELOPMENT_VERSION"
+    $ git push origin tag v$NEXT_VERSION && git push origin
+
+## Contributing
+
+We're looking forward to your comments, issues and pull requests!
 
 ## License
 
