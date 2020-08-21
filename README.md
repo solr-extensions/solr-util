@@ -1,9 +1,14 @@
 # Utility classes for Apache Solr
 
+[![travis ci build status](https://travis-ci.org/solr-cool/solr-util.png)](https://travis-ci.org/github/solr-cool/solr-util)
+[![Maven Central](https://img.shields.io/maven-central/v/cool.solr/solr-util)](https://search.maven.org/artifact/cool.solr/solr-util/)
+
+> ♻️ this is the official and maintained fork of the original [@shopping24](https://github.com/shopping24) repository maintained by [solr.cool](https://solr.cool).
+
 Utility classes for working with Apache Solr. Currently contains only some convenience methods for working with
 instances of `NamedList`.
 
-For more information, read the [JavaDoc](https://www.javadoc.io/doc/com.s24.search.solr/solr-util).
+For more information, read the [JavaDoc](https://www.javadoc.io/doc/cool.solr/solr-util).
 
 ## Usage
 
