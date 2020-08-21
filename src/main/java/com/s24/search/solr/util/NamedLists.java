@@ -259,7 +259,7 @@ public final class NamedLists {
     *           the list.
     * @param elementClass
     *           the class of the element expected in the list at the specified index.
-    * @index the index of the element.
+    * @param index the index of the element.
     * @return the element at the specified index.
     * @throws NamedListEntryClassCastException
     *            if the value stored in the list is not an instance of {@code elementClass}.
