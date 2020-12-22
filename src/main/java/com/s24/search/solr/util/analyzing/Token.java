@@ -3,13 +3,14 @@ package com.s24.search.solr.util.analyzing;
 import com.google.common.base.Objects;
 import org.apache.lucene.util.Attribute;
 
+import java.util.StringJoiner;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Representation of a token in the analyzing phase with additional information.
  */
 public class Token {
-    public static final String MULTIWORD_TOKEN = "multiword";
 
     /**
      * Name of the token.
@@ -64,11 +65,11 @@ public class Token {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("token", name)
-                .add("position", position)
-                .add("tokenCount", tokenCount)
-                .add("type", type)
+        return new StringJoiner(", ", Token.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("type='" + type + "'")
+                .add("position=" + position)
+                .add("tokenCount=" + tokenCount)
                 .toString();
     }
 

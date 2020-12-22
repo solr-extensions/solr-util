@@ -25,36 +25,40 @@ import org.apache.solr.common.util.NamedList;
  */
 public class NamedListBuilder<T> {
 
-   NamedList<T> underConstruction = new NamedList<>();
+    NamedList<T> underConstruction = new NamedList<>();
 
-   /**
-    * Creates a new Builder instance.
-    */
-   public NamedListBuilder() {
-   }
+    /**
+     * Creates a new Builder instance.
+     */
+    public NamedListBuilder() {
+    }
 
-   /**
-    * Adds the given name-value pair to the end of the named list constructed by this builder.
-    */
-   public NamedListBuilder add(String name, T value) {
-      if (underConstruction == null) {
-         throw new IllegalStateException("build() was already invoked on this builder instance");
-      }
+    public static <T> NamedListBuilder<T> namedListBuilder() {
+        return new NamedListBuilder<T>();
+    }
 
-      underConstruction.add(name, value);
-      return this;
-   }
+    /**
+     * Adds the given name-value pair to the end of the named list constructed by this builder.
+     */
+    public NamedListBuilder add(String name, T value) {
+        if (underConstruction == null) {
+            throw new IllegalStateException("build() was already invoked on this builder instance");
+        }
 
-   /**
-    * Returns the named list constructed by this builder.
-    */
-   public NamedList<T> build() {
-      if (underConstruction == null) {
-         throw new IllegalStateException("build() was already invoked on this builder instance");
-      }
+        underConstruction.add(name, value);
+        return this;
+    }
 
-      NamedList<T> result = underConstruction;
-      underConstruction = null;
-      return result;
-   }
+    /**
+     * Returns the named list constructed by this builder.
+     */
+    public NamedList<T> build() {
+        if (underConstruction == null) {
+            throw new IllegalStateException("build() was already invoked on this builder instance");
+        }
+
+        NamedList<T> result = underConstruction;
+        underConstruction = null;
+        return result;
+    }
 }
