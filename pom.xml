@@ -6,7 +6,7 @@
 
    <groupId>cool.solr</groupId>
    <artifactId>solr-util</artifactId>
-   <version>1.6.0</version>
+   <version>1.6.1-SNAPSHOT</version>
    <name>Utility classes for Apache Solr</name>
    <description>Utility classes for Apache Solr</description>
    <url>https://github.com/solr-cool/solr-util</url>
