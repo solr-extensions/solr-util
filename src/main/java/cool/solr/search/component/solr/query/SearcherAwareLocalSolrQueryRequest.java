@@ -2,7 +2,7 @@ package cool.solr.search.component.solr.query;
 
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
-import org.apache.solr.request.LocalSolrQueryRequest;
+import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.search.SolrIndexSearcher;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Those are aware of any cache-warming. If cache-warming is in progress, the
  * searcher to warm will be used instead of the to be replaced searcher.
  */
-public class SearcherAwareLocalSolrQueryRequest extends LocalSolrQueryRequest {
+public class SearcherAwareLocalSolrQueryRequest extends SolrQueryRequestBase {
     /**
      * Searcher.
      */
@@ -25,7 +25,7 @@ public class SearcherAwareLocalSolrQueryRequest extends LocalSolrQueryRequest {
      * cold searcher with it's connected caches will be used for requesting.
      */
     public SearcherAwareLocalSolrQueryRequest(SolrIndexSearcher searcher, NamedList<?> args) {
-        super(checkNotNull(searcher).getCore(), args);
+        super(checkNotNull(searcher).getCore(), args.toSolrParams());
 
         this.searcher = searcher;
     }
