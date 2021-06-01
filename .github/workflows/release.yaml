@@ -32,12 +32,14 @@ jobs:
 
     - name: Build and publish a release
       run: |
-        mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:set \
+        mvn --batch \
+            --no-transfer-progress \
+            org.codehaus.mojo:versions-maven-plugin:2.8.1:set \
             -DgenerateBackupPoms=false \
             -DnewVersion=${{ github.event.inputs.version }}
-        mvn -P release \
+        mvn --batch \
             --no-transfer-progress \
-            --batch-mode \
+            -P release \
             -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
             -Dgpg.keyname=tbk@thiswayup.de \
             clean deploy
