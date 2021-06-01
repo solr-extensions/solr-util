@@ -1,4 +1,4 @@
-name: geoip-api release
+name: solr-util release
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Install gpg secret key
+      run: |
+        cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+        gpg --list-secret-keys --keyid-format LONG
+
+    - name: Checkout repo
+      uses: actions/checkout@v2
 
     - name: Cache maven deps
       uses: actions/cache@v2
@@ -24,20 +30,69 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: Build a release
+    - name: Build and publish a release
       run: |
-        mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.inputs.version }}
-        mvn -P release
+        mvn org.codehaus.mojo:versions-maven-plugin:2.8.1:set \
+            -DgenerateBackupPoms=false \
+            -DnewVersion=${{ github.event.inputs.version }}
+        mvn -P release \
+            --no-transfer-progress \
+            --batch-mode \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            -Dgpg.keyname=tbk@thiswayup.de \
+            clean deploy
 
-#    - name: Create Release
-#      uses: actions/create-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        tag_name: ${{ steps.determine-tag.outputs.tag }}
-#        release_name: ${{ steps.determine-tag.outputs.tag }}
-#        body: |
-#          Weekly release with updated geoip information
-#          as of week ${{ steps.determine-tag.outputs.tag }}.
-#        draft: false
-#        prerelease: false
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: ${{ github.event.inputs.version }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset (.jar)
+      id: upload-release-jar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/solr-util-${{ github.event.inputs.version }}.jar
+        asset_name: solr-util-${{ github.event.inputs.version }}.jar
+        asset_content_type: application/java-archive
+
+    - name: Upload Release Asset (-sources.jar)
+      id: upload-release-source-jar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/solr-util-${{ github.event.inputs.version }}-sources.jar
+        asset_name: solr-util-${{ github.event.inputs.version }}-sources.jar
+        asset_content_type: application/java-archive
+
+    - name: Upload Release Asset (-javadoc.jar)
+      id: upload-release-javadoc-jar
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/solr-util-${{ github.event.inputs.version }}-javadoc.jar
+        asset_name: solr-util-${{ github.event.inputs.version }}-javadoc.jar
+        asset_content_type: application/java-archive
+
+    - name: Upload Release Asset (.pom)
+      id: upload-release-pom
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: target/solr-util-${{ github.event.inputs.version }}.pom
+        asset_name: solr-util-${{ github.event.inputs.version }}.pom
+        asset_content_type: application/xml
